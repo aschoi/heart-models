@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Beating Heart and ECG</title>
+    <meta
+      name="description"
+      content="A 3D heart beating in sync with a lead II ECG strip, with a moving time cursor, adjustable playback speed, the conduction system and live valve states."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="/src/shared/theme.css" />
+    <link rel="stylesheet" href="/src/heartbeat/heartbeat.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page-header">
+        <div>
+          <a class="crumb" href="../">← All models</a>
+          <h1>Beating heart and ECG</h1>
+          <p>
+            One heartbeat at a resting 60 beats per minute. The heart, the electrical signal and the
+            ECG trace all run on the same clock, so the cursor on the strip shows exactly which
+            moment of the beat you are watching.
+          </p>
+        </div>
+        <span class="badge">Lead II · Normal sinus rhythm</span>
+      </header>
+
+      <div class="top">
+        <div class="stage" id="stage">
+          <div class="overlay" id="overlay"></div>
+          <div class="stage-bar">
+            <span class="hint" id="hint"
+              >Drag to rotate · Scroll to zoom · Space to play or pause</span
+            >
+            <button class="btn" id="reset" type="button">Reset view</button>
+          </div>
+        </div>
+
+        <aside class="rail">
+          <section class="panel controls" aria-label="Playback">
+            <div class="row">
+              <button class="btn primary" id="play" type="button">Pause</button>
+              <button class="btn" id="back" type="button" aria-label="Step back 10 milliseconds">
+                −10 ms
+              </button>
+              <button class="btn" id="fwd" type="button" aria-label="Step forward 10 milliseconds">
+                +10 ms
+              </button>
+            </div>
+            <div class="speed-head">
+              <label class="eyebrow" for="speed">Playback speed</label>
+              <output id="speedOut" for="speed">0.25×</output>
+            </div>
+            <input
+              type="range"
+              id="speed"
+              min="0"
+              max="1000"
+              step="1"
+              value="0"
+              aria-describedby="speedNote"
+            />
+            <div class="segmented presets" role="group" aria-label="Speed presets">
+              <button type="button" data-speed="0.1">0.1×</button>
+              <button type="button" data-speed="0.25">0.25×</button>
+              <button type="button" data-speed="0.5">0.5×</button>
+              <button type="button" data-speed="1">1×</button>
+              <button type="button" data-speed="2">2×</button>
+            </div>
+            <p class="note" id="speedNote">
+              At 1× the heart beats in real time at 60 bpm. At 0.1× one beat lasts 10 seconds.
+            </p>
+          </section>
+
+          <section class="panel now" aria-label="Current moment">
+            <div class="clock">
+              <span class="eyebrow">Time in this beat</span>
+              <span><strong id="tms">0 ms</strong> <span class="of">of 1000</span></span>
+            </div>
+            <div class="event">
+              <span class="eyebrow">Electrical</span>
+              <h3 id="eName"></h3>
+              <p id="eText"></p>
+            </div>
+            <div class="event">
+              <span class="eyebrow">Mechanical</span>
+              <h3 id="mName"></h3>
+              <p id="mText"></p>
+            </div>
+            <div class="valves">
+              <div class="valve">
+                <span class="name">Tricuspid and mitral</span
+                ><span class="pill" id="avPill">Open</span>
+              </div>
+              <div class="valve">
+                <span class="name">Pulmonary and aortic</span
+                ><span class="pill" id="slPill">Closed</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="toggles" aria-label="Display options">
+            <label class="switch"
+              ><input type="checkbox" id="tglGlass" checked /><span class="track"></span>See-through
+              walls</label
+            >
+            <label class="switch"
+              ><input type="checkbox" id="tglCond" checked /><span class="track"></span>Conduction
+              system</label
+            >
+            <label class="switch"
+              ><input type="checkbox" id="tglLabels" checked /><span class="track"></span
+              >Labels</label
+            >
+          </section>
+        </aside>
+      </div>
+
+      <section class="strip" aria-label="ECG strip">
+        <div class="strip-head">
+          <div>
+            <h2>ECG, lead II</h2>
+            <div class="spec">
+              25 mm/s · 10 mm/mV · small square 40 ms × 0.1 mV · drag across the strip to scrub
+            </div>
+          </div>
+          <span class="segment-pill" id="segPill">TP segment</span>
+        </div>
+        <canvas
+          id="strip"
+          aria-label="ECG trace with a moving time cursor, a systole and diastole band, and a left ventricular volume curve"
+        ></canvas>
+        <div class="strip-key">
+          <span><i style="background: var(--systole)"></i>Ventricular systole</span>
+          <span><i style="background: var(--diastole)"></i>Ventricular diastole</span>
+          <span
+            ><i style="background: var(--oxy)"></i>Left ventricular volume, typical resting
+            values</span
+          >
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/src/heartbeat/main.ts"></script>
+  </body>
+</html>

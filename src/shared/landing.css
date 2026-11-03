@@ -1,0 +1,69 @@
+.models {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 20px;
+}
+
+.model {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.model:hover {
+  border-color: var(--muted);
+}
+
+.model img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--stage);
+  border-bottom: 1px solid var(--line);
+}
+
+.model .body {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 18px;
+}
+
+.model h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.model p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.model ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.model .open {
+  font: 500 13px/1 var(--font-mono);
+  color: var(--cursor);
+  margin-top: 6px;
+}
+
+.site-foot {
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}

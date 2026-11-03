@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Heart Anatomy Model</title>
+    <meta
+      name="description"
+      content="A stylized 3D teaching model of the heart with exterior, cutaway and X-ray views, labeled structures and animated blood flow."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="/src/shared/theme.css" />
+    <link rel="stylesheet" href="/src/anatomy/anatomy.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page-header">
+        <div>
+          <a class="crumb" href="../">← All models</a>
+          <h1>Heart anatomy model</h1>
+          <p>
+            A stylized 3D teaching model of the heart. Drag to rotate, scroll or pinch to zoom, and
+            select any part to learn what it does.
+          </p>
+        </div>
+        <span class="badge">Anterior view at start</span>
+      </header>
+
+      <div class="app">
+        <div class="stage" id="stage">
+          <div class="overlay" id="overlay"></div>
+          <div class="stage-bar">
+            <span class="hint" id="hint">Drag to rotate · Scroll to zoom · Right-drag to pan</span>
+            <button class="btn" id="reset" type="button">Reset view</button>
+          </div>
+        </div>
+
+        <aside class="rail">
+          <section>
+            <span class="eyebrow">View</span>
+            <div class="segmented" role="group" aria-label="View mode">
+              <button type="button" data-mode="exterior" aria-pressed="true">Exterior</button>
+              <button type="button" data-mode="cutaway" aria-pressed="false">Cutaway</button>
+              <button type="button" data-mode="xray" aria-pressed="false">X-ray</button>
+            </div>
+            <p class="note mode-note" id="modeNote"></p>
+          </section>
+
+          <section class="toggles" aria-label="Display options">
+            <label class="switch"
+              ><input type="checkbox" id="tglLabels" checked /><span class="track"></span
+              >Labels</label
+            >
+            <label class="switch"
+              ><input type="checkbox" id="tglFlow" /><span class="track"></span>Blood flow</label
+            >
+          </section>
+
+          <section class="panel info" aria-live="polite">
+            <span class="chip" id="infoChip"></span>
+            <h2 id="infoName"></h2>
+            <p id="infoText"></p>
+            <dl class="facts" id="infoFacts"></dl>
+          </section>
+
+          <section>
+            <span class="eyebrow">Structures</span>
+            <div class="parts" id="parts"></div>
+          </section>
+
+          <section class="legend">
+            <div class="keys">
+              <span><i style="background: var(--deoxy)"></i>Deoxygenated blood</span>
+              <span><i style="background: var(--oxy)"></i>Oxygenated blood</span>
+            </div>
+            <div>
+              Blood leaves through the pulmonary arteries to the lungs and returns through the
+              pulmonary veins. The lungs, the coronary arteries and the conduction system are not
+              modeled here.
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+    <script type="module" src="/src/anatomy/main.ts"></script>
+  </body>
+</html>

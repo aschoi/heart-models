@@ -1,0 +1,451 @@
+/* Shared design tokens and components for every page.
+   Layout: a 3D stage beside a reference rail, stacking to one column on phones. */
+:root {
+  --bg: #edf0f2;
+  --surface: #ffffff;
+  --stage: #e2e7eb;
+  --ink: #17202a;
+  --muted: #596572;
+  --line: #d0d7dd;
+  --oxy: #b13f47;
+  --deoxy: #3a69a3;
+  --valve: #8a7346;
+  --wall: #9a6553;
+  --spark: #b07d12;
+  --cursor: #0f6b72;
+  --tint: rgba(15, 107, 114, 0.13);
+  --focus: #0f6b72;
+  --paper: #fff7f6;
+  --grid-minor: #f5d6d7;
+  --grid-major: #e8a9ae;
+  --trace: #1b1f24;
+  --paper-ink: #7b5357;
+  --systole: #efd3d5;
+  --diastole: #e8eef1;
+  --vol-bg: #f7f9fa;
+  --font-display: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0d1216;
+    --surface: #141b21;
+    --stage: #10171c;
+    --ink: #e4e9ed;
+    --muted: #93a0ab;
+    --line: #25303a;
+    --oxy: #e46d74;
+    --deoxy: #7ea6dd;
+    --valve: #cfb98b;
+    --wall: #d4957f;
+    --spark: #f0c050;
+    --cursor: #5fd3d9;
+    --tint: rgba(95, 211, 217, 0.14);
+    --focus: #5fd3d9;
+    --paper: #121617;
+    --grid-minor: #261c1f;
+    --grid-major: #47292f;
+    --trace: #9fe6b4;
+    --paper-ink: #c9a1a6;
+    --systole: #3a2328;
+    --diastole: #1a2329;
+    --vol-bg: #11181d;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0d1216;
+  --surface: #141b21;
+  --stage: #10171c;
+  --ink: #e4e9ed;
+  --muted: #93a0ab;
+  --line: #25303a;
+  --oxy: #e46d74;
+  --deoxy: #7ea6dd;
+  --valve: #cfb98b;
+  --wall: #d4957f;
+  --spark: #f0c050;
+  --cursor: #5fd3d9;
+  --tint: rgba(95, 211, 217, 0.14);
+  --focus: #5fd3d9;
+  --paper: #121617;
+  --grid-minor: #261c1f;
+  --grid-major: #47292f;
+  --trace: #9fe6b4;
+  --paper-ink: #c9a1a6;
+  --systole: #3a2328;
+  --diastole: #1a2329;
+  --vol-bg: #11181d;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-block: 22px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  max-width: 64ch;
+}
+
+.crumb {
+  font: 500 12px/1 var(--font-mono);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.crumb:hover {
+  color: var(--ink);
+}
+
+.badge {
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.eyebrow {
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.note {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* 3D stage */
+.stage {
+  position: relative;
+  height: min(62vh, 620px);
+  min-height: 400px;
+  background: var(--stage);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  cursor: grab;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stage-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  pointer-events: none;
+}
+
+.hint {
+  font: 400 11.5px/1.4 var(--font-mono);
+  color: var(--muted);
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* 3D labels */
+.lbl {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: 500 11.5px/1 var(--font-mono);
+  color: var(--ink);
+  white-space: nowrap;
+  will-change: transform;
+  transition: opacity 0.2s ease;
+}
+
+button.lbl {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.lbl .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 2px var(--surface);
+  flex: none;
+}
+
+.lbl .txt {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 5px 8px;
+  border-radius: 999px;
+}
+
+.lbl[data-kind='deoxy'] .dot {
+  background: var(--deoxy);
+}
+
+.lbl[data-kind='oxy'] .dot {
+  background: var(--oxy);
+}
+
+.lbl[data-kind='valve'] .dot {
+  background: var(--valve);
+}
+
+.lbl[data-kind='wall'] .dot {
+  background: var(--wall);
+}
+
+.lbl[data-kind='spark'] .dot {
+  background: var(--spark);
+}
+
+.lbl.behind {
+  opacity: 0.28;
+}
+
+.lbl.active .txt {
+  border-color: var(--ink);
+}
+
+.lbl:focus-visible {
+  outline: none;
+}
+
+.lbl:focus-visible .txt {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.orient {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font: italic 400 14px/1 var(--font-display);
+  color: var(--muted);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Controls */
+.btn {
+  pointer-events: auto;
+  font: 500 13px/1 var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--muted);
+}
+
+.btn.primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  min-width: 92px;
+}
+
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.track {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.2s;
+  flex: none;
+}
+
+.track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: transform 0.2s;
+}
+
+.switch input:checked + .track {
+  background: var(--ink);
+}
+
+.switch input:checked + .track::after {
+  transform: translateX(14px);
+}
+
+.switch input:focus-visible + .track {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 3px;
+  background: var(--stage);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.segmented button {
+  font: 500 13px/1 var(--font-body);
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  padding: 10px 4px;
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lbl,
+  .track,
+  .track::after {
+    transition: none;
+  }
+}
